@@ -1,0 +1,2601 @@
+/* ========================================
+   IDENTIDADE VISUAL - CLÍNICA SAÚDE+
+======================================== */
+
+:root {
+    --primary: #00BFA6;
+    --primary-dark: #00A28E;
+
+    --secondary: #007C91;
+    --secondary-dark: #006A7B;
+
+    --support: #A7E3D8;
+
+    --accent: #5BC0EB;
+
+    --white: #FFFFFF;
+
+    --neutral: #E8ECEF;
+
+    --background: #F6FAFB;
+
+    --text: #173A45;
+
+    --text-light: #667A83;
+
+    --success: #16A36A;
+
+    --danger: #C94444;
+
+    --shadow:
+        0 18px 50px rgba(0, 124, 145, 0.08);
+}
+
+
+/* ========================================
+   GERAL
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    font-family: "Inter", Arial, sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    line-height: 1.6;
+}
+
+
+h1,
+h2,
+h3,
+strong,
+button {
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+button {
+    border: none;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.header {
+    width: 100%;
+
+    min-height: 86px;
+
+    padding: 0 7%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background:
+        rgba(255, 255, 255, 0.96);
+
+    border-bottom:
+        1px solid rgba(0, 124, 145, 0.08);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    backdrop-filter: blur(14px);
+}
+
+
+/* ========================================
+   LOGO
+======================================== */
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    text-decoration: none;
+}
+
+
+.brand-symbol {
+    width: 49px;
+
+    height: 49px;
+
+    position: relative;
+}
+
+
+.brand-piece {
+    width: 23px;
+
+    height: 23px;
+
+    position: absolute;
+
+    border-radius: 8px 8px 8px 2px;
+}
+
+
+.piece-1 {
+    top: 0;
+
+    left: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #00CDB2,
+            #00AFA2
+        );
+}
+
+
+.piece-2 {
+    top: 0;
+
+    right: 0;
+
+    transform: rotate(90deg);
+
+    background:
+        linear-gradient(
+            145deg,
+            #52D8C7,
+            #00BFA6
+        );
+}
+
+
+.piece-3 {
+    bottom: 0;
+
+    left: 0;
+
+    transform: rotate(-90deg);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0097A8,
+            #007C91
+        );
+}
+
+
+.piece-4 {
+    bottom: 0;
+
+    right: 0;
+
+    transform: rotate(180deg);
+
+    background:
+        linear-gradient(
+            145deg,
+            #007C91,
+            #005F74
+        );
+}
+
+
+.brand-center {
+    position: absolute;
+
+    width: 12px;
+
+    height: 42px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    top: 3px;
+
+    left: 18px;
+
+    transform: rotate(42deg);
+
+    z-index: 3;
+}
+
+
+.brand-copy {
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1;
+}
+
+
+.brand-name {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 7px;
+}
+
+
+.brand-name > span {
+    color: #5D6C75;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+}
+
+
+.brand-name strong {
+    color: var(--secondary);
+
+    font-size: 24px;
+
+    font-weight: 700;
+}
+
+
+.brand-plus {
+    color: var(--primary);
+}
+
+
+.brand-copy small {
+    margin-top: 5px;
+
+    color: #778A92;
+
+    font-size: 8px;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+
+/* ========================================
+   MENU
+======================================== */
+
+.menu {
+    display: flex;
+
+    align-items: center;
+
+    gap: 33px;
+}
+
+
+.menu a,
+.employee-menu-button {
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #52666F;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.employee-menu-button {
+    padding: 11px 19px;
+
+    background: #EAF9F6;
+
+    color: var(--secondary);
+
+    border-radius: 30px;
+}
+
+
+.menu a:hover {
+    color: var(--primary);
+}
+
+
+.employee-menu-button:hover {
+    background: var(--support);
+}
+
+
+/* ========================================
+   HERO
+======================================== */
+
+.hero {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 90px 7% 95px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F1FCFA 0%,
+            #F7FCFD 48%,
+            #EFF9FD 100%
+        );
+}
+
+
+.hero-wrapper {
+    width: 100%;
+
+    max-width: 1250px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.05fr 0.95fr;
+
+    gap: 70px;
+
+    align-items: center;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.hero-content {
+    max-width: 680px;
+}
+
+
+.hero-tag {
+    display: inline-flex;
+
+    padding: 8px 15px;
+
+    margin-bottom: 22px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(0, 191, 166, 0.11);
+
+    color: var(--secondary);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+}
+
+
+.hero h1 {
+    font-size: clamp(42px, 5vw, 66px);
+
+    line-height: 1.08;
+
+    letter-spacing: -2px;
+
+    color: #114A59;
+
+    max-width: 680px;
+}
+
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+
+.hero-content > p {
+    max-width: 590px;
+
+    margin-top: 22px;
+
+    color: var(--text-light);
+
+    font-size: 18px;
+}
+
+
+.hero-actions {
+    margin-top: 32px;
+
+    display: flex;
+
+    gap: 13px;
+
+    flex-wrap: wrap;
+}
+
+
+.primary-button,
+.secondary-button {
+    min-height: 50px;
+
+    padding: 0 23px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+
+.primary-button {
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #00AFA0
+        );
+
+    color: white;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 191, 166, 0.20);
+}
+
+
+.primary-button:hover {
+    transform: translateY(-2px);
+}
+
+
+.secondary-button {
+    background: white;
+
+    border:
+        1px solid rgba(0, 124, 145, 0.18);
+
+    color: var(--secondary);
+}
+
+
+.secondary-button:hover {
+    border-color: var(--primary);
+}
+
+
+/* ========================================
+   INFORMAÇÕES HERO
+======================================== */
+
+.hero-info {
+    margin-top: 42px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 28px;
+}
+
+
+.info-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.info-icon {
+    width: 39px;
+
+    height: 39px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: white;
+
+    color: var(--secondary);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 7px 20px
+        rgba(0, 124, 145, 0.08);
+}
+
+
+.info-item div:last-child {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.info-item strong {
+    font-size: 12px;
+
+    color: #31535D;
+}
+
+
+.info-item span {
+    font-size: 12px;
+
+    color: #758990;
+}
+
+
+/* ========================================
+   CARD HERO
+======================================== */
+
+.hero-visual {
+    display: flex;
+
+    justify-content: center;
+}
+
+
+.health-card {
+    width: 100%;
+
+    max-width: 440px;
+
+    padding: 30px;
+
+    position: relative;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #FFFFFF,
+            #F7FFFF
+        );
+
+    border:
+        1px solid rgba(0, 124, 145, 0.10);
+
+    box-shadow:
+        0 30px 70px
+        rgba(0, 124, 145, 0.12);
+}
+
+
+.health-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+
+    height: 130px;
+
+    right: -30px;
+
+    bottom: -30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 191, 166, 0.14),
+            rgba(91, 192, 235, 0.10)
+        );
+
+    border-radius: 50%;
+}
+
+
+.health-card-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.health-mini-logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.mini-cross {
+    width: 36px;
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    border-radius: 11px;
+
+    color: white;
+
+    font-size: 23px;
+}
+
+
+.health-mini-logo div:last-child {
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.05;
+}
+
+
+.health-mini-logo span {
+    font-size: 10px;
+
+    color: #697B83;
+}
+
+
+.health-mini-logo strong {
+    color: var(--secondary);
+}
+
+
+.online-badge {
+    padding: 6px 10px;
+
+    background: #ECFBF7;
+
+    color: var(--success);
+
+    border-radius: 30px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.health-card-content {
+    padding: 52px 5px 35px;
+}
+
+
+.health-icon {
+    width: 63px;
+
+    height: 63px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #D9F8F1,
+            #DDF5FB
+        );
+
+    color: var(--secondary);
+
+    font-size: 34px;
+}
+
+
+.health-card-content > span {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--primary);
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+.health-card-content h3 {
+    margin-top: 8px;
+
+    font-size: 27px;
+
+    line-height: 1.2;
+
+    color: #164C59;
+}
+
+
+.health-card-content p {
+    margin-top: 11px;
+
+    font-size: 14px;
+
+    color: var(--text-light);
+}
+
+
+.health-features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 8px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+.health-features div {
+    padding: 10px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    background: #F0FAF8;
+
+    color: #506B72;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+.health-features span {
+    color: var(--primary);
+}
+
+
+/* ========================================
+   DECORAÇÕES
+======================================== */
+
+.hero-decoration {
+    position: absolute;
+
+    border-radius: 50%;
+}
+
+
+.hero-decoration-one {
+    width: 330px;
+
+    height: 330px;
+
+    right: -110px;
+
+    top: -70px;
+
+    background:
+        rgba(0, 191, 166, 0.08);
+}
+
+
+.hero-decoration-two {
+    width: 230px;
+
+    height: 230px;
+
+    left: -100px;
+
+    bottom: -120px;
+
+    background:
+        rgba(91, 192, 235, 0.09);
+}
+
+
+/* ========================================
+   COMO FUNCIONA
+======================================== */
+
+.how-it-works {
+    background: white;
+
+    border-top:
+        1px solid rgba(0, 124, 145, 0.06);
+
+    border-bottom:
+        1px solid rgba(0, 124, 145, 0.06);
+}
+
+
+.how-wrapper {
+    max-width: 1150px;
+
+    margin: auto;
+
+    padding: 35px 25px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+
+.how-item {
+    display: flex;
+
+    gap: 15px;
+
+    align-items: flex-start;
+}
+
+
+.how-number {
+    min-width: 39px;
+
+    height: 39px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #E9FAF6;
+
+    color: var(--primary);
+
+    font-family: "Poppins";
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.how-item strong {
+    font-size: 14px;
+
+    color: #25515D;
+}
+
+
+.how-item p {
+    margin-top: 2px;
+
+    font-size: 12px;
+
+    color: var(--text-light);
+}
+
+
+/* ========================================
+   SEÇÕES
+======================================== */
+
+.section-container {
+    width: 100%;
+
+    max-width: 1120px;
+
+    margin: auto;
+
+    padding: 90px 25px;
+}
+
+
+.section-label {
+    margin-bottom: 8px;
+
+    color: var(--primary);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+.section-header {
+    margin-bottom: 34px;
+}
+
+
+.section-header h2 {
+    font-size: 34px;
+
+    color: #134C5A;
+}
+
+
+.section-header p {
+    margin-top: 5px;
+
+    color: var(--text-light);
+}
+
+
+/* ========================================
+   CARD AGENDAMENTO
+======================================== */
+
+.appointment-card {
+    padding: 42px;
+
+    background: white;
+
+    border:
+        1px solid rgba(0, 124, 145, 0.10);
+
+    border-radius: 24px;
+
+    box-shadow: var(--shadow);
+}
+
+
+/* ========================================
+   ETAPAS
+======================================== */
+
+.step-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 22px;
+}
+
+
+.step-heading > span {
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #D7F7F0,
+            #E0F5FB
+        );
+
+    color: var(--secondary);
+
+    font-family: "Poppins";
+
+    font-weight: 700;
+}
+
+
+.step-heading div {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.step-heading strong {
+    color: #254E59;
+}
+
+
+.step-heading small {
+    margin-top: 2px;
+
+    color: #849398;
+}
+
+
+/* ========================================
+   FORMULÁRIOS
+======================================== */
+
+.form-group {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.form-group label {
+    color: #31535D;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.form-group input {
+    width: 100%;
+
+    min-height: 50px;
+
+    padding: 0 15px;
+
+    border:
+        1px solid #D7E2E6;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    background: white;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+
+.form-group input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(0, 191, 166, 0.10);
+}
+
+
+.date-search {
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.date-search input {
+    flex: 1;
+}
+
+
+.date-search button {
+    min-width: 190px;
+
+    padding: 0 22px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            #00A99B
+        );
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.date-search button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(0, 191, 166, 0.20);
+}
+
+
+/* ========================================
+   MENSAGENS
+======================================== */
+
+.message {
+    margin-top: 17px;
+
+    font-size: 13px;
+}
+
+
+.message.error {
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    background: #FFF1F1;
+
+    color: var(--danger);
+
+    border:
+        1px solid #FFD2D2;
+}
+
+
+.message.success {
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    background: #EBFBF6;
+
+    color: #087A61;
+
+    border:
+        1px solid #BDEEDF;
+}
+
+
+/* ========================================
+   HORÁRIOS
+======================================== */
+
+.times-section {
+    margin-top: 38px;
+
+    padding-top: 30px;
+
+    border-top:
+        1px solid var(--neutral);
+}
+
+
+.times-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(105px, 1fr));
+
+    gap: 11px;
+}
+
+
+.time-button {
+    min-height: 48px;
+
+    border:
+        1px solid #D5E2E5;
+
+    border-radius: 11px;
+
+    background: white;
+
+    color: #36545D;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.time-button:hover {
+    border-color: var(--primary);
+
+    color: var(--secondary);
+
+    background: #F1FCFA;
+}
+
+
+.time-button.selected {
+    border-color: var(--primary);
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    box-shadow:
+        0 8px 20px
+        rgba(0, 191, 166, 0.16);
+}
+
+
+/* ========================================
+   PACIENTE
+======================================== */
+
+.appointment-form {
+    margin-top: 38px;
+
+    padding-top: 30px;
+
+    border-top:
+        1px solid var(--neutral);
+}
+
+
+.selected-info {
+    margin-bottom: 24px;
+
+    padding: 16px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ECFAF7,
+            #EFF9FC
+        );
+}
+
+
+.selected-info div {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.selected-info small {
+    color: #6A858C;
+}
+
+
+.selected-info strong {
+    margin-top: 3px;
+
+    color: var(--secondary);
+
+    font-size: 18px;
+}
+
+
+.selected-check {
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--primary);
+
+    color: white;
+
+    border-radius: 50%;
+
+    font-weight: 800;
+}
+
+
+.form-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 18px;
+}
+
+
+.confirm-button,
+.employee-login-button {
+    width: 100%;
+
+    min-height: 52px;
+
+    margin-top: 24px;
+
+    border-radius: 11px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.confirm-button:hover,
+.employee-login-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 25px
+        rgba(0, 124, 145, 0.18);
+}
+
+
+/* ========================================
+   VALORES DA MARCA
+======================================== */
+
+.brand-values {
+    padding: 70px 7%;
+
+    background: white;
+}
+
+
+.brand-values-wrapper {
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 22px;
+}
+
+
+.brand-value {
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background: #F8FCFC;
+
+    text-align: center;
+}
+
+
+.value-icon {
+    width: 54px;
+
+    height: 54px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #D2F4EC,
+            #DFF4FB
+        );
+
+    color: var(--secondary);
+
+    font-size: 25px;
+}
+
+
+.brand-value h3 {
+    color: #24515D;
+
+    font-size: 16px;
+}
+
+
+.brand-value p {
+    margin-top: 6px;
+
+    color: #778A91;
+
+    font-size: 12px;
+}
+
+
+/* ========================================
+   FUNCIONÁRIO
+======================================== */
+
+.employee-area {
+    padding-top: 70px;
+}
+
+
+.employee-card {
+    max-width: 500px;
+
+    margin: auto;
+
+    padding: 38px;
+
+    background: white;
+
+    border:
+        1px solid rgba(0, 124, 145, 0.10);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.employee-lock {
+    width: 55px;
+
+    height: 55px;
+
+    margin-bottom: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #D7F7F0,
+            #DFF5FC
+        );
+
+    font-size: 24px;
+}
+
+
+.employee-small-title {
+    color: var(--primary);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+}
+
+
+.employee-card h3 {
+    margin-top: 3px;
+
+    font-size: 24px;
+
+    color: #174D59;
+}
+
+
+.employee-card > p {
+    margin: 7px 0 24px;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+}
+
+
+/* ========================================
+   PAINEL FUNCIONÁRIO
+======================================== */
+
+.employee-panel {
+    padding: 35px;
+
+    background: white;
+
+    border:
+        1px solid rgba(0, 124, 145, 0.10);
+
+    border-radius: 22px;
+
+    box-shadow: var(--shadow);
+}
+
+
+.employee-panel-header {
+    margin-bottom: 28px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.employee-panel-header h3 {
+    margin-top: 4px;
+
+    color: #164D59;
+
+    font-size: 25px;
+}
+
+
+.employee-panel-header p {
+    color: var(--text-light);
+}
+
+
+.authorized-label {
+    color: var(--success);
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+
+.logout-button {
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    border:
+        1px solid #FFD0D0;
+
+    background: #FFF8F8;
+
+    color: #B94444;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+
+/* ========================================
+   AGENDAMENTOS
+======================================== */
+
+.appointments-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(280px, 1fr));
+
+    gap: 17px;
+}
+
+
+.appointment-item {
+    padding: 22px;
+
+    border:
+        1px solid #DFE9EC;
+
+    border-radius: 15px;
+
+    background: #FAFDFD;
+
+    transition: 0.2s;
+}
+
+
+.appointment-item:hover {
+    transform: translateY(-2px);
+
+    border-color: var(--support);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 124, 145, 0.06);
+}
+
+
+.appointment-item h3 {
+    margin-bottom: 12px;
+
+    color: var(--secondary);
+
+    font-size: 16px;
+}
+
+
+.appointment-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+    color: #72858B;
+
+    font-size: 13px;
+}
+
+
+.appointment-details strong {
+    color: #365861;
+
+    font-family: "Inter", sans-serif;
+}
+
+
+.empty-state {
+    grid-column: 1 / -1;
+
+    padding: 50px;
+
+    text-align: center;
+
+    border:
+        1px dashed #C5D9DD;
+
+    border-radius: 15px;
+
+    background: #FAFDFD;
+
+    color: #80939A;
+}
+
+
+.empty-icon {
+    margin-bottom: 8px;
+
+    color: var(--primary);
+
+    font-size: 30px;
+}
+
+
+/* ========================================
+   BOTÕES AGENDAMENTO FUNCIONÁRIO
+======================================== */
+
+.appointment-actions {
+    margin-top: 20px;
+
+    padding-top: 17px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    border-top:
+        1px solid #E5EEF0;
+}
+
+
+.edit-appointment-button,
+.delete-appointment-button {
+    min-height: 42px;
+
+    padding: 0 15px;
+
+    border-radius: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.edit-appointment-button {
+    background: #E9FAF6;
+
+    color: #007C91;
+
+    border:
+        1px solid #BDEADF;
+}
+
+
+.edit-appointment-button:hover {
+    background: #D7F6EE;
+
+    border-color: #00BFA6;
+}
+
+
+.delete-appointment-button {
+    background: #FFF5F5;
+
+    color: #C44747;
+
+    border:
+        1px solid #FFD1D1;
+}
+
+
+.delete-appointment-button:hover {
+    background: #FFECEC;
+}
+
+
+/* ========================================
+   REAGENDAMENTO
+======================================== */
+
+.reschedule-panel {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F3FBF9,
+            #F5FBFD
+        );
+
+    border:
+        1px solid #CAE8E5;
+}
+
+
+.reschedule-heading {
+    margin-bottom: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.reschedule-heading strong {
+    color: #164F5B;
+
+    font-size: 15px;
+}
+
+
+.reschedule-heading span {
+    margin-top: 2px;
+
+    color: #71868D;
+
+    font-size: 12px;
+}
+
+
+.reschedule-form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.reschedule-form-group label {
+    color: #355861;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.reschedule-form-group input {
+    min-height: 45px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid #D0E0E3;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #274C55;
+
+    outline: none;
+}
+
+
+.reschedule-form-group input:focus {
+    border-color: #00BFA6;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 191, 166, 0.09);
+}
+
+
+.reschedule-search-button {
+    width: 100%;
+
+    min-height: 43px;
+
+    margin-top: 11px;
+
+    border-radius: 9px;
+
+    background: #007C91;
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.reschedule-search-button:hover {
+    background: #006B7D;
+}
+
+
+.reschedule-message {
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    color: #6A8087;
+}
+
+
+.reschedule-message.error {
+    padding: 9px 11px;
+
+    border-radius: 8px;
+
+    background: #FFF0F0;
+
+    color: #B63D3D;
+}
+
+
+.reschedule-message.success {
+    padding: 9px 11px;
+
+    border-radius: 8px;
+
+    background: #EAFBF6;
+
+    color: #08785F;
+}
+
+
+.reschedule-times {
+    margin-top: 13px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 7px;
+}
+
+
+.reschedule-time-button {
+    min-height: 38px;
+
+    border-radius: 8px;
+
+    border:
+        1px solid #CBDDE0;
+
+    background: white;
+
+    color: #3C5B63;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.reschedule-time-button:hover {
+    border-color: #00BFA6;
+
+    color: #007C91;
+}
+
+
+.reschedule-time-button.current {
+    border-style: dashed;
+}
+
+
+.reschedule-time-button.selected {
+    background:
+        linear-gradient(
+            135deg,
+            #00BFA6,
+            #007C91
+        );
+
+    border-color: #00BFA6;
+
+    color: white;
+}
+
+
+.reschedule-actions {
+    margin-top: 17px;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+
+.save-reschedule-button,
+.close-reschedule-button {
+    min-height: 42px;
+
+    border-radius: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.save-reschedule-button {
+    background:
+        linear-gradient(
+            135deg,
+            #00BFA6,
+            #007C91
+        );
+
+    color: white;
+}
+
+
+.save-reschedule-button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+.close-reschedule-button {
+    background: white;
+
+    color: #657C83;
+
+    border:
+        1px solid #D4E1E4;
+}
+
+
+/* ========================================
+   MODAL CONFIRMAÇÃO
+======================================== */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(9, 48, 57, 0.55);
+
+    backdrop-filter: blur(5px);
+}
+
+
+.confirmation-modal {
+    width: 100%;
+
+    max-width: 520px;
+
+    padding: 38px;
+
+    border-radius: 24px;
+
+    background: #FFFFFF;
+
+    text-align: center;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 75, 91, 0.22);
+
+    animation:
+        modalOpen 0.3s ease;
+}
+
+
+@keyframes modalOpen {
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+.modal-success-icon {
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00BFA6,
+            #007C91
+        );
+
+    color: #FFFFFF;
+
+    font-size: 32px;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 10px 25px
+        rgba(0, 191, 166, 0.20);
+}
+
+
+.modal-small-title {
+    color: #00BFA6;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+.confirmation-modal h2 {
+    margin-top: 5px;
+
+    color: #164F5B;
+
+    font-size: 27px;
+
+    line-height: 1.25;
+}
+
+
+.modal-description {
+    margin-top: 8px;
+
+    color: #71868D;
+
+    font-size: 14px;
+}
+
+
+.modal-appointment-info {
+    margin-top: 22px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ECFAF7,
+            #EFF9FC
+        );
+
+    color: #176476;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.modal-contact-info {
+    margin-top: 18px;
+
+    padding: 16px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    text-align: left;
+
+    border-radius: 13px;
+
+    background: #F7FAFB;
+
+    border:
+        1px solid #DFE9EC;
+}
+
+
+.contact-icon {
+    min-width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #DDF6F1;
+
+    color: #007C91;
+
+    font-size: 19px;
+}
+
+
+.modal-contact-info strong {
+    color: #315861;
+
+    font-size: 13px;
+}
+
+
+.modal-contact-info p {
+    margin-top: 3px;
+
+    color: #72868C;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.modal-contact-info p strong {
+    color: #007C91;
+}
+
+
+.modal-close-button {
+    width: 100%;
+
+    min-height: 50px;
+
+    margin-top: 24px;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00BFA6,
+            #007C91
+        );
+
+    color: #FFFFFF;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.modal-close-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 9px 25px
+        rgba(0, 124, 145, 0.18);
+}
+
+
+/* ========================================
+   RODAPÉ
+======================================== */
+
+footer {
+    min-height: 130px;
+
+    padding: 30px 7%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #006E82,
+            #005E70
+        );
+
+    color: white;
+}
+
+
+.footer-brand strong {
+    font-size: 22px;
+}
+
+
+.footer-brand strong span {
+    color: #61E2CF;
+}
+
+
+.footer-brand p {
+    margin-top: 2px;
+
+    color: #C5E4E9;
+
+    font-size: 12px;
+}
+
+
+.footer-info {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 3px;
+
+    color: #CAE4E8;
+
+    font-size: 12px;
+}
+
+
+/* ========================================
+   AUXILIAR
+======================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ========================================
+   RESPONSIVIDADE
+======================================== */
+
+@media (max-width: 950px) {
+
+    .hero-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+        justify-content: flex-start;
+    }
+
+    .brand-values-wrapper {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 750px) {
+
+    .header {
+        padding: 0 4%;
+    }
+
+    .brand-copy small {
+        display: none;
+    }
+
+    .menu {
+        gap: 14px;
+    }
+
+    .hero {
+        padding:
+            65px 5%
+            70px;
+    }
+
+    .hero h1 {
+        letter-spacing: -1px;
+    }
+
+    .how-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .section-container {
+        padding:
+            70px 18px;
+    }
+
+    .appointment-card,
+    .employee-panel {
+        padding: 27px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 560px) {
+
+    .header {
+        min-height: 75px;
+    }
+
+    .brand-symbol {
+        width: 42px;
+
+        height: 42px;
+
+        transform: scale(0.86);
+
+        transform-origin: left center;
+    }
+
+    .brand {
+        gap: 5px;
+    }
+
+    .brand-name {
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+    .brand-name > span {
+        font-size: 9px;
+    }
+
+    .brand-name strong {
+        font-size: 17px;
+    }
+
+    .menu a {
+        display: none;
+    }
+
+    .employee-menu-button {
+        padding:
+            9px 13px;
+
+        font-size: 12px;
+    }
+
+    .hero {
+        padding:
+            55px 18px;
+    }
+
+    .hero-content > p {
+        font-size: 15px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+        width: 100%;
+    }
+
+    .hero-info {
+        flex-direction: column;
+    }
+
+    .health-card {
+        padding: 22px;
+    }
+
+    .health-features {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-values-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .date-search {
+        flex-direction: column;
+    }
+
+    .date-search button {
+        width: 100%;
+
+        min-height: 50px;
+    }
+
+    .appointment-card {
+        padding: 20px;
+    }
+
+    .employee-card {
+        padding: 25px;
+    }
+
+    .employee-panel-header {
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .appointment-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .reschedule-times {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .reschedule-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .confirmation-modal {
+        padding: 28px 20px;
+    }
+
+    .confirmation-modal h2 {
+        font-size: 23px;
+    }
+
+    footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .footer-info {
+        align-items: flex-start;
+    }
+
+}

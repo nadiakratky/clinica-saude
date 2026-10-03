@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Clínica Saúde+ | Agendamento</title>
+
+    <!-- Fontes da identidade visual -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body>
+
+<!-- =========================================
+     CABEÇALHO
+========================================= -->
+
+<header class="header">
+
+    <a href="#" class="brand">
+
+        <div class="brand-symbol" aria-hidden="true">
+
+            <span class="brand-piece piece-1"></span>
+            <span class="brand-piece piece-2"></span>
+            <span class="brand-piece piece-3"></span>
+            <span class="brand-piece piece-4"></span>
+
+            <span class="brand-center"></span>
+
+        </div>
+
+        <div class="brand-copy">
+
+            <div class="brand-name">
+
+                <span>Clínica</span>
+
+                <strong>
+                    Saúde<span class="brand-plus">+</span>
+                </strong>
+
+            </div>
+
+            <small>
+                Cuidando de você sempre
+            </small>
+
+        </div>
+
+    </a>
+
+    <nav class="menu">
+
+        <a href="#agendar">
+            Agendar
+        </a>
+
+        <button
+            id="employee-menu-button"
+            class="employee-menu-button"
+            type="button"
+        >
+            Funcionário
+        </button>
+
+    </nav>
+
+</header>
+
+
+<!-- =========================================
+     CONTEÚDO PRINCIPAL
+========================================= -->
+
+<main>
+
+
+    <!-- =====================================
+         HERO
+    ====================================== -->
+
+    <section class="hero">
+
+        <div class="hero-decoration hero-decoration-one"></div>
+        <div class="hero-decoration hero-decoration-two"></div>
+
+        <div class="hero-wrapper">
+
+            <div class="hero-content">
+
+                <span class="hero-tag">
+                    Cuidado, tecnologia e praticidade
+                </span>
+
+                <h1>
+                    Sua saúde merece
+                    <span>mais facilidade.</span>
+                </h1>
+
+                <p>
+                    Consulte horários disponíveis e realize
+                    seu agendamento de forma rápida, segura
+                    e simples.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="#agendar"
+                        class="primary-button"
+                    >
+                        Agende sua consulta
+                    </a>
+
+                    <a
+                        href="#como-funciona"
+                        class="secondary-button"
+                    >
+                        Como funciona
+                    </a>
+
+                </div>
+
+                <div class="hero-info">
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            08
+                        </div>
+
+                        <div>
+                            <strong>Atendimento</strong>
+                            <span>08:00 às 18:00</span>
+                        </div>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            1h
+                        </div>
+
+                        <div>
+                            <strong>Duração</strong>
+                            <span>Consultas de 1 hora</span>
+                        </div>
+
+                    </div>
+
+                    <div class="info-item">
+
+                        <div class="info-icon">
+                            BR
+                        </div>
+
+                        <div>
+                            <strong>Fuso horário</strong>
+                            <span>Horário de Brasília</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD VISUAL -->
+
+            <div class="hero-visual">
+
+                <div class="health-card">
+
+                    <div class="health-card-top">
+
+                        <div class="health-mini-logo">
+
+                            <div class="mini-cross">
+                                +
+                            </div>
+
+                            <div>
+                                <span>Clínica</span>
+                                <strong>Saúde+</strong>
+                            </div>
+
+                        </div>
+
+                        <span class="online-badge">
+                            ● Online
+                        </span>
+
+                    </div>
+
+                    <div class="health-card-content">
+
+                        <div class="health-icon">
+                            ♡
+                        </div>
+
+                        <span>
+                            Agendamento inteligente
+                        </span>
+
+                        <h3>
+                            Encontre o melhor horário
+                            para você.
+                        </h3>
+
+                        <p>
+                            Datas e horários são validados
+                            automaticamente pelo sistema.
+                        </p>
+
+                    </div>
+
+                    <div class="health-features">
+
+                        <div>
+                            <span>✓</span>
+                            Dias úteis
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Horários reais
+                        </div>
+
+                        <div>
+                            <span>✓</span>
+                            Confirmação imediata
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         COMO FUNCIONA
+    ====================================== -->
+
+    <section
+        id="como-funciona"
+        class="how-it-works"
+    >
+
+        <div class="how-wrapper">
+
+            <div class="how-item">
+
+                <span class="how-number">
+                    01
+                </span>
+
+                <div>
+                    <strong>Escolha a data</strong>
+
+                    <p>
+                        Selecione o dia desejado para
+                        sua consulta.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="how-item">
+
+                <span class="how-number">
+                    02
+                </span>
+
+                <div>
+                    <strong>Selecione o horário</strong>
+
+                    <p>
+                        Veja apenas os horários que
+                        realmente estão disponíveis.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="how-item">
+
+                <span class="how-number">
+                    03
+                </span>
+
+                <div>
+                    <strong>Confirme</strong>
+
+                    <p>
+                        Informe seus dados e finalize
+                        o agendamento.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         AGENDAMENTO
+    ====================================== -->
+
+    <section
+        id="agendar"
+        class="section-container"
+    >
+
+        <div class="section-label">
+            Agendamento online
+        </div>
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Agende sua consulta
+                </h2>
+
+                <p>
+                    Escolha uma data para verificar
+                    os horários disponíveis.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="appointment-card">
+
+
+            <!-- ETAPA 1 -->
+
+            <div class="step-heading">
+
+                <span>1</span>
+
+                <div>
+                    <strong>
+                        Escolha uma data
+                    </strong>
+
+                    <small>
+                        Atendimentos somente em dias úteis.
+                    </small>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="appointment-date">
+                    Data da consulta
+                </label>
+
+                <div class="date-search">
+
+                    <input
+                        type="date"
+                        id="appointment-date"
+                    >
+
+                    <button
+                        id="search-times"
+                        type="button"
+                    >
+                        Buscar horários
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="date-message"
+                class="message"
+            >
+            </div>
+
+
+            <!-- ETAPA 2 -->
+
+            <div
+                id="times-section"
+                class="times-section hidden"
+            >
+
+                <div class="step-heading">
+
+                    <span>2</span>
+
+                    <div>
+
+                        <strong>
+                            Escolha um horário
+                        </strong>
+
+                        <small>
+                            Cada consulta possui duração
+                            de 1 hora.
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="available-times"
+                    class="times-grid"
+                >
+                </div>
+
+            </div>
+
+
+            <!-- ETAPA 3 -->
+
+            <form
+                id="appointment-form"
+                class="appointment-form hidden"
+            >
+
+                <div class="step-heading">
+
+                    <span>3</span>
+
+                    <div>
+
+                        <strong>
+                            Seus dados
+                        </strong>
+
+                        <small>
+                            Preencha as informações
+                            para confirmar.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="selected-info">
+
+                    <div>
+
+                        <small>
+                            Horário selecionado
+                        </small>
+
+                        <strong id="selected-time">
+                            -
+                        </strong>
+
+                    </div>
+
+                    <span class="selected-check">
+                        ✓
+                    </span>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="patient-name">
+                            Nome completo
+                        </label>
+
+                        <input
+                            type="text"
+                            id="patient-name"
+                            placeholder="Digite seu nome completo"
+                            required
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="patient-phone">
+                            Telefone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="patient-phone"
+                            placeholder="(19) 99999-9999"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="confirm-button"
+                >
+                    Confirmar agendamento
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         VALORES DA MARCA
+    ====================================== -->
+
+    <section class="brand-values">
+
+        <div class="brand-values-wrapper">
+
+            <div class="brand-value">
+
+                <div class="value-icon">
+                    ♢
+                </div>
+
+                <h3>
+                    Confiança
+                </h3>
+
+                <p>
+                    Segurança em todas as etapas
+                    do agendamento.
+                </p>
+
+            </div>
+
+            <div class="brand-value">
+
+                <div class="value-icon">
+                    ♡
+                </div>
+
+                <h3>
+                    Acolhimento
+                </h3>
+
+                <p>
+                    Uma experiência simples,
+                    humana e respeitosa.
+                </p>
+
+            </div>
+
+            <div class="brand-value">
+
+                <div class="value-icon">
+                    ☼
+                </div>
+
+                <h3>
+                    Clareza
+                </h3>
+
+                <p>
+                    Informações objetivas e
+                    transparentes.
+                </p>
+
+            </div>
+
+            <div class="brand-value">
+
+                <div class="value-icon">
+                    ▥
+                </div>
+
+                <h3>
+                    Tecnologia
+                </h3>
+
+                <p>
+                    Tecnologia facilitando
+                    o cuidado com a saúde.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         FUNCIONÁRIO
+    ====================================== -->
+
+    <section
+        id="employee-area"
+        class="section-container employee-area hidden"
+    >
+
+        <div class="section-label">
+            Área interna
+        </div>
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+                    Área do funcionário
+                </h2>
+
+                <p>
+                    Ambiente restrito para consulta
+                    e gerenciamento dos agendamentos.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <div
+            id="employee-login-card"
+            class="employee-card"
+        >
+
+            <div class="employee-lock">
+                🔒
+            </div>
+
+            <span class="employee-small-title">
+                Acesso protegido
+            </span>
+
+            <h3>
+                Login do funcionário
+            </h3>
+
+            <p>
+                Informe a senha cadastrada
+                para acessar os dados dos pacientes.
+            </p>
+
+            <form id="employee-login-form">
+
+                <div class="form-group">
+
+                    <label for="employee-password">
+                        Senha
+                    </label>
+
+                    <input
+                        type="password"
+                        id="employee-password"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="employee-login-button"
+                >
+                    Acessar painel
+                </button>
+
+            </form>
+
+            <div
+                id="employee-login-message"
+                class="message"
+            >
+            </div>
+
+        </div>
+
+
+        <!-- PAINEL -->
+
+        <div
+            id="employee-panel"
+            class="employee-panel hidden"
+        >
+
+            <div class="employee-panel-header">
+
+                <div>
+
+                    <span class="authorized-label">
+                        ● Acesso autorizado
+                    </span>
+
+                    <h3>
+                        Agenda da clínica
+                    </h3>
+
+                    <p id="appointments-counter">
+                        Consultas cadastradas.
+                    </p>
+
+                </div>
+
+                <button
+                    id="employee-logout-button"
+                    class="logout-button"
+                    type="button"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+            <div
+                id="appointments-list"
+                class="appointments-list"
+            >
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ♡
+                    </div>
+
+                    <p>
+                        Nenhum agendamento encontrado.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================
+     MODAL DE CONFIRMAÇÃO
+====================================== -->
+
+<div
+    id="confirmation-modal"
+    class="modal-overlay hidden"
+>
+
+    <div class="confirmation-modal">
+
+        <div class="modal-success-icon">
+            ✓
+        </div>
+
+        <span class="modal-small-title">
+            Consulta confirmada
+        </span>
+
+        <h2>
+            Agendamento realizado
+            com sucesso!
+        </h2>
+
+        <p class="modal-description">
+            Sua consulta foi confirmada.
+        </p>
+
+        <div class="modal-appointment-info">
+
+            <p id="modal-appointment-details">
+            </p>
+
+        </div>
+
+        <div class="modal-contact-info">
+
+            <span class="contact-icon">
+                ☎
+            </span>
+
+            <div>
+
+                <strong>
+                    Precisa cancelar ou reagendar?
+                </strong>
+
+                <p>
+                    Em caso de desistência ou necessidade
+                    de reagendamento, entre em contato pelo
+                    telefone
+                    <strong>(--) 00000-0000</strong>.
+                </p>
+
+            </div>
+
+        </div>
+
+        <button
+            id="close-confirmation-modal"
+            class="modal-close-button"
+            type="button"
+        >
+            Entendi
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================
+     RODAPÉ
+====================================== -->
+
+<footer>
+
+    <div class="footer-brand">
+
+        <strong>
+            Clínica Saúde<span>+</span>
+        </strong>
+
+        <p>
+            Cuidando de você sempre.
+        </p>
+
+    </div>
+
+    <div class="footer-info">
+
+        <span>
+            Atendimento: 08:00 às 18:00
+        </span>
+
+        <span>
+            São Paulo
+        </span>
+
+    </div>
+
+</footer>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+>
+</script>
+
+</body>
+
+</html>

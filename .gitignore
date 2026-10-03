@@ -1,0 +1,22 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Banco SQLite local
+database.db
+*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# PyCharm
+.idea/
+
+# Variáveis de ambiente
+.env
+
+# Sistema operacional
+.DS_Store
+Thumbs.dbgit --version
