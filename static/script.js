@@ -2,32 +2,55 @@
 // ELEMENTOS DO AGENDAMENTO
 // ========================================
 
+const specialtyInput =
+    document.getElementById(
+        "appointment-specialty"
+    );
+
 const dateInput =
-    document.getElementById("appointment-date");
+    document.getElementById(
+        "appointment-date"
+    );
 
 const searchTimesButton =
-    document.getElementById("search-times");
+    document.getElementById(
+        "search-times"
+    );
 
 const dateMessage =
-    document.getElementById("date-message");
+    document.getElementById(
+        "date-message"
+    );
 
 const timesSection =
-    document.getElementById("times-section");
+    document.getElementById(
+        "times-section"
+    );
 
 const availableTimesContainer =
-    document.getElementById("available-times");
+    document.getElementById(
+        "available-times"
+    );
 
 const appointmentForm =
-    document.getElementById("appointment-form");
+    document.getElementById(
+        "appointment-form"
+    );
 
 const patientNameInput =
-    document.getElementById("patient-name");
+    document.getElementById(
+        "patient-name"
+    );
 
 const patientPhoneInput =
-    document.getElementById("patient-phone");
+    document.getElementById(
+        "patient-phone"
+    );
 
 const selectedTimeElement =
-    document.getElementById("selected-time");
+    document.getElementById(
+        "selected-time"
+    );
 
 
 // ========================================
@@ -109,8 +132,8 @@ const appointmentsCounter =
 // VARIÁVEIS
 // ========================================
 
+let selectedSpecialty = null;
 let selectedDate = null;
-
 let selectedTime = null;
 
 
@@ -120,7 +143,8 @@ let selectedTime = null;
 
 function getTodayDate() {
 
-    const today = new Date();
+    const today =
+        new Date();
 
     const year =
         today.getFullYear();
@@ -128,15 +152,24 @@ function getTodayDate() {
     const month =
         String(
             today.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
     const day =
         String(
             today.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
-    return `${year}-${month}-${day}`;
+    return (
+        `${year}-${month}-${day}`
+    );
+
 }
 
 
@@ -155,12 +188,48 @@ dateInput.max =
 
 
 // ========================================
+// MUDOU ESPECIALIDADE
+// ========================================
+
+specialtyInput.addEventListener(
+    "change",
+    function () {
+
+        selectedSpecialty =
+            null;
+
+        selectedTime =
+            null;
+
+        timesSection.classList.add(
+            "hidden"
+        );
+
+        appointmentForm.classList.add(
+            "hidden"
+        );
+
+        availableTimesContainer.innerHTML =
+            "";
+
+        clearMessage(
+            dateMessage
+        );
+
+    }
+);
+
+
+// ========================================
 // BUSCAR HORÁRIOS
 // ========================================
 
 searchTimesButton.addEventListener(
     "click",
     async function () {
+
+        const specialty =
+            specialtyInput.value;
 
         const date =
             dateInput.value;
@@ -175,21 +244,34 @@ searchTimesButton.addEventListener(
             "hidden"
         );
 
-
         appointmentForm.classList.add(
             "hidden"
         );
 
-
         availableTimesContainer.innerHTML =
             "";
 
+
+        selectedSpecialty =
+            null;
 
         selectedDate =
             null;
 
         selectedTime =
             null;
+
+
+        if (!specialty) {
+
+            showMessage(
+                dateMessage,
+                "Selecione uma especialidade.",
+                "error"
+            );
+
+            return;
+        }
 
 
         if (!date) {
@@ -215,7 +297,9 @@ searchTimesButton.addEventListener(
 
             const response =
                 await fetch(
-                    `/available?date=${encodeURIComponent(date)}`
+
+                    `/available?date=${encodeURIComponent(date)}&specialty=${encodeURIComponent(specialty)}`
+
                 );
 
 
@@ -253,13 +337,16 @@ searchTimesButton.addEventListener(
             }
 
 
+            selectedSpecialty =
+                specialty;
+
             selectedDate =
                 date;
 
 
             showMessage(
                 dateMessage,
-                "Horários encontrados. Escolha uma opção abaixo.",
+                `Horários disponíveis para ${specialty}.`,
                 "success"
             );
 
@@ -271,7 +358,9 @@ searchTimesButton.addEventListener(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
 
             showMessage(
@@ -299,7 +388,9 @@ searchTimesButton.addEventListener(
 // MOSTRAR HORÁRIOS
 // ========================================
 
-function renderAvailableTimes(times) {
+function renderAvailableTimes(
+    times
+) {
 
     availableTimesContainer.innerHTML =
         "";
@@ -317,11 +408,9 @@ function renderAvailableTimes(times) {
             button.type =
                 "button";
 
-
             button.classList.add(
                 "time-button"
             );
-
 
             button.textContent =
                 time;
@@ -391,7 +480,7 @@ function selectTime(
 
 
     selectedTimeElement.textContent =
-        time;
+        `${selectedSpecialty} • ${time}`;
 
 
     appointmentForm.classList.remove(
@@ -420,13 +509,14 @@ appointmentForm.addEventListener(
 
 
         if (
+            !selectedSpecialty ||
             !selectedDate ||
             !selectedTime
         ) {
 
             showMessage(
                 dateMessage,
-                "Escolha uma data e um horário.",
+                "Escolha especialidade, data e horário.",
                 "error"
             );
 
@@ -456,6 +546,9 @@ appointmentForm.addEventListener(
 
             phone:
                 phone,
+
+            specialty:
+                selectedSpecialty,
 
             date:
                 selectedDate,
@@ -522,22 +615,15 @@ appointmentForm.addEventListener(
             }
 
 
-            // ========================================
-            // ABRIR CONFIRMAÇÃO
-            // ========================================
-
             modalAppointmentDetails.textContent =
-                `${patientName} • ${formatDate(selectedDate)} às ${selectedTime} • Horário de Brasília`;
+
+                `${patientName} • ${selectedSpecialty} • ${formatDate(selectedDate)} às ${selectedTime} • Horário de Brasília`;
 
 
             confirmationModal.classList.remove(
                 "hidden"
             );
 
-
-            // ========================================
-            // LIMPAR FORMULÁRIO
-            // ========================================
 
             patientNameInput.value =
                 "";
@@ -554,8 +640,6 @@ appointmentForm.addEventListener(
             await updateAvailableTimes();
 
 
-            // Atualiza o painel caso o funcionário
-            // esteja logado.
             if (
                 !employeePanel.classList.contains(
                     "hidden"
@@ -569,7 +653,9 @@ appointmentForm.addEventListener(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
 
             showMessage(
@@ -599,7 +685,10 @@ appointmentForm.addEventListener(
 
 async function updateAvailableTimes() {
 
-    if (!selectedDate) {
+    if (
+        !selectedDate ||
+        !selectedSpecialty
+    ) {
 
         return;
 
@@ -610,7 +699,9 @@ async function updateAvailableTimes() {
 
         const response =
             await fetch(
-                `/available?date=${encodeURIComponent(selectedDate)}`
+
+                `/available?date=${encodeURIComponent(selectedDate)}&specialty=${encodeURIComponent(selectedSpecialty)}`
+
             );
 
 
@@ -648,7 +739,6 @@ async function updateAvailableTimes() {
 
         selectedTime =
             null;
-
 
         selectedTimeElement.textContent =
             "-";
@@ -702,7 +792,7 @@ confirmationModal.addEventListener(
 
 
 // ========================================
-// ABRIR ÁREA FUNCIONÁRIO
+// FUNCIONÁRIO
 // ========================================
 
 employeeMenuButton.addEventListener(
@@ -730,10 +820,6 @@ employeeMenuButton.addEventListener(
     }
 );
 
-
-// ========================================
-// STATUS FUNCIONÁRIO
-// ========================================
 
 async function checkEmployeeStatus() {
 
@@ -764,7 +850,9 @@ async function checkEmployeeStatus() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         showEmployeeLogin();
 
@@ -815,7 +903,6 @@ employeeLoginForm.addEventListener(
 
             button.disabled =
                 true;
-
 
             button.textContent =
                 "Entrando...";
@@ -871,13 +958,14 @@ employeeLoginForm.addEventListener(
 
             showEmployeePanel();
 
-
             await loadAppointments();
 
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
 
             showMessage(
@@ -929,7 +1017,9 @@ employeeLogoutButton.addEventListener(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
         }
 
@@ -937,16 +1027,11 @@ employeeLogoutButton.addEventListener(
 );
 
 
-// ========================================
-// MOSTRAR LOGIN
-// ========================================
-
 function showEmployeeLogin() {
 
     employeePanel.classList.add(
         "hidden"
     );
-
 
     employeeLoginCard.classList.remove(
         "hidden"
@@ -955,16 +1040,11 @@ function showEmployeeLogin() {
 }
 
 
-// ========================================
-// MOSTRAR PAINEL
-// ========================================
-
 function showEmployeePanel() {
 
     employeeLoginCard.classList.add(
         "hidden"
     );
-
 
     employeePanel.classList.remove(
         "hidden"
@@ -991,7 +1071,9 @@ async function loadAppointments() {
             await response.json();
 
 
-        if (response.status === 401) {
+        if (
+            response.status === 401
+        ) {
 
             showEmployeeLogin();
 
@@ -1015,7 +1097,9 @@ async function loadAppointments() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         appointmentsList.innerHTML = `
@@ -1023,8 +1107,7 @@ async function loadAppointments() {
             <div class="empty-state">
 
                 <p>
-                    Não foi possível carregar
-                    os agendamentos.
+                    Não foi possível carregar os agendamentos.
                 </p>
 
             </div>
@@ -1037,7 +1120,7 @@ async function loadAppointments() {
 
 
 // ========================================
-// MOSTRAR AGENDAMENTOS
+// MOSTRAR CONSULTAS
 // ========================================
 
 function renderAppointments(
@@ -1103,8 +1186,6 @@ function renderAppointments(
             );
 
 
-            // NOME
-
             const title =
                 document.createElement(
                     "h3"
@@ -1115,7 +1196,20 @@ function renderAppointments(
                 appointment.patient_name;
 
 
-            // DETALHES
+            const specialtyBadge =
+                document.createElement(
+                    "span"
+                );
+
+
+            specialtyBadge.classList.add(
+                "appointment-specialty"
+            );
+
+
+            specialtyBadge.textContent =
+                appointment.specialty;
+
 
             const details =
                 document.createElement(
@@ -1154,8 +1248,6 @@ function renderAppointments(
             );
 
 
-            // BOTÕES
-
             const actions =
                 document.createElement(
                     "div"
@@ -1176,11 +1268,9 @@ function renderAppointments(
             editButton.type =
                 "button";
 
-
             editButton.classList.add(
                 "edit-appointment-button"
             );
-
 
             editButton.textContent =
                 "Reagendar";
@@ -1208,11 +1298,9 @@ function renderAppointments(
             deleteButton.type =
                 "button";
 
-
             deleteButton.classList.add(
                 "delete-appointment-button"
             );
-
 
             deleteButton.textContent =
                 "Cancelar";
@@ -1234,21 +1322,22 @@ function renderAppointments(
                 editButton
             );
 
-
             actions.appendChild(
                 deleteButton
             );
 
 
             card.appendChild(
-                title
+                specialtyBadge
             );
 
+            card.appendChild(
+                title
+            );
 
             card.appendChild(
                 details
             );
-
 
             card.appendChild(
                 actions
@@ -1298,8 +1387,6 @@ function openReschedulePanel(
     );
 
 
-    // CABEÇALHO
-
     const heading =
         document.createElement(
             "div"
@@ -1328,20 +1415,17 @@ function openReschedulePanel(
 
 
     headingText.textContent =
-        "Escolha a nova data e o novo horário.";
+        `${appointment.specialty} • escolha a nova data e horário.`;
 
 
     heading.appendChild(
         headingTitle
     );
 
-
     heading.appendChild(
         headingText
     );
 
-
-    // DATA
 
     const dateGroup =
         document.createElement(
@@ -1373,10 +1457,8 @@ function openReschedulePanel(
     newDateInput.type =
         "date";
 
-
     newDateInput.min =
         todayDate;
-
 
     newDateInput.max =
         "2026-12-31";
@@ -1392,13 +1474,10 @@ function openReschedulePanel(
         dateLabel
     );
 
-
     dateGroup.appendChild(
         newDateInput
     );
 
-
-    // BUSCAR HORÁRIOS
 
     const searchButton =
         document.createElement(
@@ -1409,17 +1488,13 @@ function openReschedulePanel(
     searchButton.type =
         "button";
 
-
     searchButton.classList.add(
         "reschedule-search-button"
     );
 
-
     searchButton.textContent =
         "Ver horários";
 
-
-    // MENSAGEM
 
     const message =
         document.createElement(
@@ -1431,8 +1506,6 @@ function openReschedulePanel(
         "reschedule-message"
     );
 
-
-    // CONTAINER HORÁRIOS
 
     const timesContainer =
         document.createElement(
@@ -1449,8 +1522,6 @@ function openReschedulePanel(
         null;
 
 
-    // SALVAR
-
     const saveButton =
         document.createElement(
             "button"
@@ -1460,21 +1531,16 @@ function openReschedulePanel(
     saveButton.type =
         "button";
 
-
     saveButton.classList.add(
         "save-reschedule-button"
     );
 
-
     saveButton.textContent =
         "Salvar alteração";
-
 
     saveButton.disabled =
         true;
 
-
-    // FECHAR
 
     const closeButton =
         document.createElement(
@@ -1485,11 +1551,9 @@ function openReschedulePanel(
     closeButton.type =
         "button";
 
-
     closeButton.classList.add(
         "close-reschedule-button"
     );
-
 
     closeButton.textContent =
         "Fechar";
@@ -1504,8 +1568,6 @@ function openReschedulePanel(
         }
     );
 
-
-    // BOTÕES
 
     const panelActions =
         document.createElement(
@@ -1522,15 +1584,10 @@ function openReschedulePanel(
         saveButton
     );
 
-
     panelActions.appendChild(
         closeButton
     );
 
-
-    // ========================================
-    // CARREGAR HORÁRIOS NOVOS
-    // ========================================
 
     async function loadRescheduleTimes() {
 
@@ -1541,14 +1598,11 @@ function openReschedulePanel(
         timesContainer.innerHTML =
             "";
 
-
         message.textContent =
             "";
 
-
         newSelectedTime =
             null;
-
 
         saveButton.disabled =
             true;
@@ -1559,10 +1613,8 @@ function openReschedulePanel(
             message.textContent =
                 "Escolha uma nova data.";
 
-
             message.className =
                 "reschedule-message error";
-
 
             return;
         }
@@ -1573,14 +1625,15 @@ function openReschedulePanel(
             searchButton.disabled =
                 true;
 
-
             searchButton.textContent =
                 "Buscando...";
 
 
             const response =
                 await fetch(
-                    `/available?date=${encodeURIComponent(newDate)}&exclude_id=${appointment.id}`
+
+                    `/available?date=${encodeURIComponent(newDate)}&specialty=${encodeURIComponent(appointment.specialty)}&exclude_id=${appointment.id}`
+
                 );
 
 
@@ -1595,10 +1648,8 @@ function openReschedulePanel(
                     data.message ||
                     "Não foi possível consultar os horários.";
 
-
                 message.className =
                     "reschedule-message error";
-
 
                 return;
             }
@@ -1610,13 +1661,10 @@ function openReschedulePanel(
             ) {
 
                 message.textContent =
-                    data.message ||
                     "Não existem horários disponíveis.";
-
 
                 message.className =
                     "reschedule-message error";
-
 
                 return;
             }
@@ -1624,7 +1672,6 @@ function openReschedulePanel(
 
             message.textContent =
                 "Selecione o novo horário.";
-
 
             message.className =
                 "reschedule-message success";
@@ -1642,30 +1689,12 @@ function openReschedulePanel(
                     timeButton.type =
                         "button";
 
-
                     timeButton.classList.add(
                         "reschedule-time-button"
                     );
 
-
                     timeButton.textContent =
                         time;
-
-
-                    if (
-                        newDate === appointment.date &&
-                        time === appointment.time
-                    ) {
-
-                        timeButton.classList.add(
-                            "current"
-                        );
-
-
-                        timeButton.title =
-                            "Horário atual";
-
-                    }
 
 
                     timeButton.addEventListener(
@@ -1713,12 +1742,13 @@ function openReschedulePanel(
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                error
+            );
 
 
             message.textContent =
                 "Erro ao consultar horários.";
-
 
             message.className =
                 "reschedule-message error";
@@ -1728,7 +1758,6 @@ function openReschedulePanel(
 
             searchButton.disabled =
                 false;
-
 
             searchButton.textContent =
                 "Ver horários";
@@ -1744,59 +1773,17 @@ function openReschedulePanel(
     );
 
 
-    newDateInput.addEventListener(
-        "change",
-        function () {
-
-            timesContainer.innerHTML =
-                "";
-
-
-            newSelectedTime =
-                null;
-
-
-            saveButton.disabled =
-                true;
-
-
-            message.textContent =
-                "Clique em Ver horários para consultar a nova data.";
-
-
-            message.className =
-                "reschedule-message";
-
-        }
-    );
-
-
-    // ========================================
-    // SALVAR ALTERAÇÃO
-    // ========================================
-
     saveButton.addEventListener(
         "click",
         async function () {
 
-            const newDate =
-                newDateInput.value;
-
-
             if (
-                !newDate ||
+                !newDateInput.value ||
                 !newSelectedTime
             ) {
 
-                message.textContent =
-                    "Escolha a nova data e horário.";
-
-
-                message.className =
-                    "reschedule-message error";
-
-
                 return;
+
             }
 
 
@@ -1804,7 +1791,6 @@ function openReschedulePanel(
 
                 saveButton.disabled =
                     true;
-
 
                 saveButton.textContent =
                     "Salvando...";
@@ -1828,8 +1814,11 @@ function openReschedulePanel(
                             body:
                                 JSON.stringify({
 
+                                    specialty:
+                                        appointment.specialty,
+
                                     date:
-                                        newDate,
+                                        newDateInput.value,
 
                                     time:
                                         newSelectedTime
@@ -1848,12 +1837,10 @@ function openReschedulePanel(
 
                     message.textContent =
                         data.error ||
-                        "Não foi possível alterar o agendamento.";
-
+                        "Não foi possível reagendar.";
 
                     message.className =
                         "reschedule-message error";
-
 
                     return;
                 }
@@ -1867,21 +1854,18 @@ function openReschedulePanel(
                 await loadAppointments();
 
 
-                if (selectedDate) {
-
-                    await updateAvailableTimes();
-
-                }
+                await updateAvailableTimes();
 
 
             } catch (error) {
 
-                console.error(error);
+                console.error(
+                    error
+                );
 
 
                 message.textContent =
                     "Erro de comunicação com o servidor.";
-
 
                 message.className =
                     "reschedule-message error";
@@ -1898,34 +1882,25 @@ function openReschedulePanel(
     );
 
 
-    // ========================================
-    // MONTAR PAINEL
-    // ========================================
-
     panel.appendChild(
         heading
     );
-
 
     panel.appendChild(
         dateGroup
     );
 
-
     panel.appendChild(
         searchButton
     );
-
 
     panel.appendChild(
         message
     );
 
-
     panel.appendChild(
         timesContainer
     );
-
 
     panel.appendChild(
         panelActions
@@ -1952,7 +1927,9 @@ async function cancelAppointment(
 
     const confirmed =
         confirm(
+
             `Deseja realmente cancelar a consulta de ${appointment.patient_name} em ${formatDate(appointment.date)} às ${appointment.time}?`
+
         );
 
 
@@ -1983,9 +1960,8 @@ async function cancelAppointment(
 
             alert(
                 data.error ||
-                "Não foi possível cancelar o agendamento."
+                "Não foi possível cancelar."
             );
-
 
             return;
         }
@@ -1998,17 +1974,14 @@ async function cancelAppointment(
 
         await loadAppointments();
 
-
-        if (selectedDate) {
-
-            await updateAvailableTimes();
-
-        }
+        await updateAvailableTimes();
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         alert(
@@ -2021,7 +1994,7 @@ async function cancelAppointment(
 
 
 // ========================================
-// CRIAR DETALHE
+// DETALHES
 // ========================================
 
 function createDetail(
@@ -2063,7 +2036,7 @@ function createDetail(
 
 
 // ========================================
-// FORMATAR DATA
+// DATA
 // ========================================
 
 function formatDate(
@@ -2071,7 +2044,9 @@ function formatDate(
 ) {
 
     const parts =
-        dateString.split("-");
+        dateString.split(
+            "-"
+        );
 
 
     if (
@@ -2105,10 +2080,8 @@ function showMessage(
     element.textContent =
         message;
 
-
     element.className =
         "message";
-
 
     element.classList.add(
         type
@@ -2123,7 +2096,6 @@ function clearMessage(
 
     element.textContent =
         "";
-
 
     element.className =
         "message";

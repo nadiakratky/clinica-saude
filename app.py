@@ -7,15 +7,11 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 
-# =========================================================
-# CONFIGURAÇÃO DO FLASK
-# =========================================================
-
 app = Flask(__name__)
 
 
 # =========================================================
-# CONFIGURAÇÕES DO SISTEMA
+# CONFIGURAÇÕES
 # =========================================================
 
 DATABASE = "database.db"
@@ -25,33 +21,22 @@ HOLIDAYS_API = (
     "PublicHolidays/2026/BR"
 )
 
-
-# Chave utilizada para proteger a sessão do Flask.
-# Em produção deve ser configurada por variável de ambiente.
 app.secret_key = os.getenv(
     "SECRET_KEY",
     "chave-local-clinica-saude-2026"
 )
 
-
-# Senha padrão da área do funcionário.
-# Para o teste local:
-# clinica2026
-#
-# Em produção também deveria vir de variável de ambiente.
 EMPLOYEE_PASSWORD = os.getenv(
     "EMPLOYEE_PASSWORD",
     "clinica2026"
 )
 
-
-# Configurações do cookie da sessão
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
 
 # =========================================================
-# HORÁRIOS DA CLÍNICA
+# HORÁRIOS
 # =========================================================
 
 ALLOWED_TIMES = [
@@ -69,13 +54,24 @@ ALLOWED_TIMES = [
 
 
 # =========================================================
-# BANCO DE DADOS
+# ESPECIALIDADES
+# =========================================================
+
+SPECIALTIES = [
+    "Clínica Geral",
+    "Pediatria",
+    "Cardiologia",
+    "Ginecologia",
+    "Ortopedia",
+    "Dermatologia"
+]
+
+
+# =========================================================
+# BANCO
 # =========================================================
 
 def get_connection():
-    """
-    Cria e retorna uma conexão com o SQLite.
-    """
 
     connection = sqlite3.connect(DATABASE)
 
@@ -84,59 +80,127 @@ def get_connection():
     return connection
 
 
-def create_database():
-    """
-    Cria a tabela de agendamentos caso ela ainda não exista.
-    """
-
-    connection = get_connection()
+def create_new_appointments_table(connection):
 
     connection.execute("""
-        CREATE TABLE IF NOT EXISTS appointments (
+        CREATE TABLE appointments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
             patient_name TEXT NOT NULL,
-
             phone TEXT NOT NULL,
-
+            specialty TEXT NOT NULL,
             date TEXT NOT NULL,
-
             time TEXT NOT NULL,
-
             created_at TEXT NOT NULL,
 
-            UNIQUE(date, time)
+            UNIQUE(date, time, specialty)
         )
     """)
 
-    connection.commit()
+
+def create_database():
+
+    connection = get_connection()
+
+    existing_table = connection.execute("""
+        SELECT name
+        FROM sqlite_master
+        WHERE type = 'table'
+        AND name = 'appointments'
+    """).fetchone()
+
+
+    # Banco novo
+    if existing_table is None:
+
+        create_new_appointments_table(
+            connection
+        )
+
+        connection.commit()
+        connection.close()
+
+        return
+
+
+    # Verifica estrutura do banco antigo
+    columns = connection.execute(
+        "PRAGMA table_info(appointments)"
+    ).fetchall()
+
+    column_names = [
+        column["name"]
+        for column in columns
+    ]
+
+
+    # Se ainda não existe especialidade,
+    # migramos a tabela antiga.
+    if "specialty" not in column_names:
+
+        connection.execute("""
+            ALTER TABLE appointments
+            RENAME TO appointments_old
+        """)
+
+        create_new_appointments_table(
+            connection
+        )
+
+        connection.execute("""
+            INSERT INTO appointments
+            (
+                id,
+                patient_name,
+                phone,
+                specialty,
+                date,
+                time,
+                created_at
+            )
+
+            SELECT
+                id,
+                patient_name,
+                phone,
+                'Clínica Geral',
+                date,
+                time,
+                created_at
+
+            FROM appointments_old
+        """)
+
+        connection.execute("""
+            DROP TABLE appointments_old
+        """)
+
+        connection.commit()
+
 
     connection.close()
 
 
 # =========================================================
-# PÁGINA PRINCIPAL
+# HOME
 # =========================================================
 
 @app.route("/")
 def index():
-    """
-    Renderiza a página principal do sistema.
-    """
 
-    return render_template("index.html")
+    return render_template(
+        "index.html"
+    )
 
 
 # =========================================================
-# LOGIN DO FUNCIONÁRIO
+# LOGIN FUNCIONÁRIO
 # =========================================================
 
-@app.route("/employee/login", methods=["POST"])
+@app.route(
+    "/employee/login",
+    methods=["POST"]
+)
 def employee_login():
-    """
-    Recebe a senha enviada pelo frontend
-    e cria uma sessão caso esteja correta.
-    """
 
     data = request.get_json()
 
@@ -147,41 +211,44 @@ def employee_login():
         }), 400
 
 
-    password = data.get("password", "")
-
-
-    # compare_digest faz uma comparação mais apropriada
-    # para informações sensíveis.
-    password_is_correct = hmac.compare_digest(
-        str(password),
-        str(EMPLOYEE_PASSWORD)
+    password = str(
+        data.get(
+            "password",
+            ""
+        )
     )
 
 
-    if not password_is_correct:
+    if not hmac.compare_digest(
+        password,
+        EMPLOYEE_PASSWORD
+    ):
 
         return jsonify({
             "error": "Senha incorreta."
         }), 401
 
 
-    session["employee_authenticated"] = True
+    session[
+        "employee_authenticated"
+    ] = True
 
 
     return jsonify({
-        "message": "Login realizado com sucesso."
+        "message":
+            "Login realizado com sucesso."
     })
 
 
 # =========================================================
-# LOGOUT DO FUNCIONÁRIO
+# LOGOUT
 # =========================================================
 
-@app.route("/employee/logout", methods=["POST"])
+@app.route(
+    "/employee/logout",
+    methods=["POST"]
+)
 def employee_logout():
-    """
-    Remove a autenticação do funcionário.
-    """
 
     session.pop(
         "employee_authenticated",
@@ -190,40 +257,33 @@ def employee_logout():
 
 
     return jsonify({
-        "message": "Logout realizado com sucesso."
+        "message":
+            "Logout realizado com sucesso."
     })
 
 
 # =========================================================
-# STATUS DO FUNCIONÁRIO
+# STATUS
 # =========================================================
 
-@app.route("/employee/status", methods=["GET"])
+@app.route(
+    "/employee/status",
+    methods=["GET"]
+)
 def employee_status():
-    """
-    Informa ao frontend se existe
-    funcionário autenticado na sessão.
-    """
-
-    authenticated = session.get(
-        "employee_authenticated",
-        False
-    )
-
 
     return jsonify({
-        "authenticated": authenticated
+
+        "authenticated":
+            session.get(
+                "employee_authenticated",
+                False
+            )
+
     })
 
 
-# =========================================================
-# VERIFICAR AUTENTICAÇÃO
-# =========================================================
-
 def employee_is_authenticated():
-    """
-    Retorna True caso exista funcionário autenticado.
-    """
 
     return session.get(
         "employee_authenticated",
@@ -232,16 +292,10 @@ def employee_is_authenticated():
 
 
 # =========================================================
-# API DE FERIADOS
+# FERIADOS
 # =========================================================
 
 def get_holidays():
-    """
-    Consulta a API Nager.Date e retorna
-    uma lista com as datas dos feriados brasileiros.
-
-    Retorna None caso a API esteja indisponível.
-    """
 
     try:
 
@@ -255,13 +309,10 @@ def get_holidays():
         holidays = response.json()
 
 
-        holiday_dates = [
+        return [
             holiday["date"]
             for holiday in holidays
         ]
-
-
-        return holiday_dates
 
 
     except (
@@ -271,7 +322,7 @@ def get_holidays():
     ) as error:
 
         print(
-            "Erro ao consultar API de feriados:",
+            "Erro ao consultar feriados:",
             error
         )
 
@@ -282,16 +333,9 @@ def get_holidays():
 # VALIDAR DATA
 # =========================================================
 
-def is_valid_business_day(date_string):
-    """
-    Verifica se a data:
-
-    - possui formato válido;
-    - pertence ao ano de 2026;
-    - não é sábado;
-    - não é domingo;
-    - não é feriado.
-    """
+def is_valid_business_day(
+    date_string
+):
 
     try:
 
@@ -306,11 +350,13 @@ def is_valid_business_day(date_string):
         TypeError
     ):
 
-        return False, "Data inválida.", 400
+        return (
+            False,
+            "Data inválida.",
+            400
+        )
 
 
-    # Como a API obrigatória solicitada pela empresa
-    # é especificamente do ano de 2026.
     if selected_date.year != 2026:
 
         return (
@@ -319,16 +365,6 @@ def is_valid_business_day(date_string):
             400
         )
 
-
-    # weekday:
-    #
-    # Segunda = 0
-    # Terça   = 1
-    # Quarta  = 2
-    # Quinta  = 3
-    # Sexta   = 4
-    # Sábado  = 5
-    # Domingo = 6
 
     if selected_date.weekday() >= 5:
 
@@ -342,14 +378,11 @@ def is_valid_business_day(date_string):
     holidays = get_holidays()
 
 
-    # Se a API estiver fora do ar,
-    # não liberamos o agendamento sem validar.
     if holidays is None:
 
         return (
             False,
-            "Não foi possível consultar os feriados. "
-            "Tente novamente em alguns instantes.",
+            "Não foi possível consultar os feriados. Tente novamente.",
             503
         )
 
@@ -363,66 +396,30 @@ def is_valid_business_day(date_string):
         )
 
 
-    return True, None, 200
+    return (
+        True,
+        None,
+        200
+    )
 
 
 # =========================================================
 # HORÁRIOS DISPONÍVEIS
 # =========================================================
 
-@app.route("/available", methods=["GET"])
+@app.route(
+    "/available",
+    methods=["GET"]
+)
 def available():
-    """
-    Exemplo:
 
-    GET /available?date=2026-10-13
-
-    Retorna os horários livres daquela data.
-    """
-
-    date = request.args.get("date")
-
-
-    if not date:
-
-        return jsonify({
-            "error": "Informe uma data."
-        }), 400
-
-
-    valid_day, message, status_code = (
-        is_valid_business_day(date)
+    date = request.args.get(
+        "date"
     )
 
-
-    if not valid_day:
-
-        return jsonify({
-
-            "date": date,
-
-            "available": [],
-
-            "message": message
-
-        }), status_code
-
-
-    connection = get_connection()
-
-
-    # -----------------------------------------------------
-    # Reagendamento
-    # -----------------------------------------------------
-    #
-    # Se um funcionário estiver reagendando uma consulta,
-    # poderá informar:
-    #
-    # /available?date=2026-10-14&exclude_id=1
-    #
-    # Assim o próprio horário atual do agendamento
-    # não será considerado ocupado.
-    # -----------------------------------------------------
+    specialty = request.args.get(
+        "specialty"
+    )
 
     exclude_id = request.args.get(
         "exclude_id",
@@ -430,35 +427,111 @@ def available():
     )
 
 
-    if (
-        exclude_id is not None
-        and employee_is_authenticated()
-    ):
+    if not date:
 
-        appointments = connection.execute(
-            """
-            SELECT time
-            FROM appointments
-            WHERE date = ?
-            AND id != ?
-            """,
-            (
+        return jsonify({
+            "error":
+                "Informe uma data."
+        }), 400
+
+
+    if specialty:
+
+        if specialty not in SPECIALTIES:
+
+            return jsonify({
+                "error":
+                    "Especialidade inválida."
+            }), 400
+
+
+    valid_day, message, status_code = (
+        is_valid_business_day(
+            date
+        )
+    )
+
+
+    if not valid_day:
+
+        return jsonify({
+
+            "date":
                 date,
-                exclude_id
+
+            "available":
+                [],
+
+            "message":
+                message
+
+        }), status_code
+
+
+    connection = get_connection()
+
+
+    # Se a especialidade foi informada,
+    # verificamos ocupação apenas nela.
+    if specialty:
+
+        if (
+            exclude_id is not None
+            and employee_is_authenticated()
+        ):
+
+            appointments = (
+                connection.execute(
+                    """
+                    SELECT time
+                    FROM appointments
+
+                    WHERE date = ?
+                    AND specialty = ?
+                    AND id != ?
+                    """,
+                    (
+                        date,
+                        specialty,
+                        exclude_id
+                    )
+                ).fetchall()
             )
-        ).fetchall()
+
+        else:
+
+            appointments = (
+                connection.execute(
+                    """
+                    SELECT time
+                    FROM appointments
+
+                    WHERE date = ?
+                    AND specialty = ?
+                    """,
+                    (
+                        date,
+                        specialty
+                    )
+                ).fetchall()
+            )
 
 
+    # Compatibilidade com o endpoint
+    # original do desafio.
     else:
 
-        appointments = connection.execute(
-            """
-            SELECT time
-            FROM appointments
-            WHERE date = ?
-            """,
-            (date,)
-        ).fetchall()
+        appointments = (
+            connection.execute(
+                """
+                SELECT time
+                FROM appointments
+
+                WHERE date = ?
+                """,
+                (date,)
+            ).fetchall()
+        )
 
 
     connection.close()
@@ -471,15 +544,25 @@ def available():
 
 
     available_times = [
+
         appointment_time
-        for appointment_time in ALLOWED_TIMES
-        if appointment_time not in occupied_times
+
+        for appointment_time
+        in ALLOWED_TIMES
+
+        if appointment_time
+        not in occupied_times
+
     ]
 
 
     return jsonify({
 
-        "date": date,
+        "date":
+            date,
+
+        "specialty":
+            specialty,
 
         "timezone":
             "America/Sao_Paulo",
@@ -494,20 +577,11 @@ def available():
 # CRIAR AGENDAMENTO
 # =========================================================
 
-@app.route("/appointments", methods=["POST"])
+@app.route(
+    "/appointments",
+    methods=["POST"]
+)
 def create_appointment():
-    """
-    Cria um novo agendamento.
-
-    Exemplo JSON:
-
-    {
-        "patient_name": "Nadia",
-        "phone": "(19) 99999-9999",
-        "date": "2026-10-13",
-        "time": "08:00"
-    }
-    """
 
     data = request.get_json()
 
@@ -536,57 +610,67 @@ def create_appointment():
     ).strip()
 
 
-    date = data.get("date")
+    specialty = str(
+        data.get(
+            "specialty",
+            ""
+        )
+    ).strip()
 
-    appointment_time = data.get("time")
 
+    date = data.get(
+        "date"
+    )
 
-    # =====================================================
-    # VALIDAR CAMPOS
-    # =====================================================
+    appointment_time = data.get(
+        "time"
+    )
+
 
     if (
         not patient_name
         or not phone
+        or not specialty
         or not date
         or not appointment_time
     ):
 
         return jsonify({
-            "error": "Preencha todos os campos."
+            "error":
+                "Preencha todos os campos."
         }), 400
 
 
-    # =====================================================
-    # VALIDAR DATA
-    # =====================================================
+    if specialty not in SPECIALTIES:
+
+        return jsonify({
+            "error":
+                "Especialidade inválida."
+        }), 400
+
 
     valid_day, message, status_code = (
-        is_valid_business_day(date)
+        is_valid_business_day(
+            date
+        )
     )
 
 
     if not valid_day:
 
         return jsonify({
-            "error": message
+            "error":
+                message
         }), status_code
 
-
-    # =====================================================
-    # VALIDAR HORÁRIO
-    # =====================================================
 
     if appointment_time not in ALLOWED_TIMES:
 
         return jsonify({
-            "error": "Horário inválido."
+            "error":
+                "Horário inválido."
         }), 400
 
-
-    # =====================================================
-    # DATA/HORA DA CRIAÇÃO
-    # =====================================================
 
     brazil_timezone = ZoneInfo(
         "America/Sao_Paulo"
@@ -597,10 +681,6 @@ def create_appointment():
         brazil_timezone
     ).isoformat()
 
-
-    # =====================================================
-    # SALVAR
-    # =====================================================
 
     connection = get_connection()
 
@@ -613,16 +693,18 @@ def create_appointment():
             (
                 patient_name,
                 phone,
+                specialty,
                 date,
                 time,
                 created_at
             )
 
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 patient_name,
                 phone,
+                specialty,
                 date,
                 appointment_time,
                 created_at
@@ -631,7 +713,6 @@ def create_appointment():
 
 
         connection.commit()
-
 
         appointment_id = (
             cursor.lastrowid
@@ -645,7 +726,7 @@ def create_appointment():
 
         return jsonify({
             "error":
-                "Este horário já foi agendado."
+                "Este horário já está ocupado para esta especialidade."
         }), 409
 
 
@@ -668,6 +749,9 @@ def create_appointment():
             "phone":
                 phone,
 
+            "specialty":
+                specialty,
+
             "date":
                 date,
 
@@ -686,17 +770,13 @@ def create_appointment():
 
 # =========================================================
 # LISTAR AGENDAMENTOS
-# SOMENTE FUNCIONÁRIOS
 # =========================================================
 
-@app.route("/appointments", methods=["GET"])
+@app.route(
+    "/appointments",
+    methods=["GET"]
+)
 def get_appointments():
-    """
-    Lista todos os agendamentos.
-
-    Esta rota só pode ser acessada
-    por funcionário autenticado.
-    """
 
     if not employee_is_authenticated():
 
@@ -709,34 +789,37 @@ def get_appointments():
     connection = get_connection()
 
 
-    appointments = connection.execute(
-        """
-        SELECT
-            id,
-            patient_name,
-            phone,
-            date,
-            time,
-            created_at
+    appointments = (
+        connection.execute(
+            """
+            SELECT
+                id,
+                patient_name,
+                phone,
+                specialty,
+                date,
+                time,
+                created_at
 
-        FROM appointments
+            FROM appointments
 
-        ORDER BY
-            date ASC,
-            time ASC
-        """
-    ).fetchall()
+            ORDER BY
+                date ASC,
+                time ASC
+            """
+        ).fetchall()
+    )
 
 
     connection.close()
 
 
-    appointments_list = []
+    result = []
 
 
     for appointment in appointments:
 
-        appointments_list.append({
+        result.append({
 
             "id":
                 appointment["id"],
@@ -749,6 +832,11 @@ def get_appointments():
             "phone":
                 appointment["phone"],
 
+            "specialty":
+                appointment[
+                    "specialty"
+                ],
+
             "date":
                 appointment["date"],
 
@@ -756,42 +844,29 @@ def get_appointments():
                 appointment["time"],
 
             "created_at":
-                appointment["created_at"]
+                appointment[
+                    "created_at"
+                ]
 
         })
 
 
     return jsonify(
-        appointments_list
+        result
     )
 
 
 # =========================================================
-# REAGENDAR / ALTERAR CONSULTA
-# SOMENTE FUNCIONÁRIOS
+# REAGENDAR
 # =========================================================
 
 @app.route(
     "/appointments/<int:appointment_id>",
     methods=["PUT"]
 )
-def update_appointment(appointment_id):
-    """
-    Altera a data e o horário de uma consulta.
-
-    Exemplo:
-
-    PUT /appointments/1
-
-    {
-        "date": "2026-10-14",
-        "time": "15:00"
-    }
-    """
-
-    # =====================================================
-    # AUTENTICAÇÃO
-    # =====================================================
+def update_appointment(
+    appointment_id
+):
 
     if not employee_is_authenticated():
 
@@ -808,26 +883,69 @@ def update_appointment(appointment_id):
 
         return jsonify({
             "error":
-                "Dados do reagendamento não informados."
+                "Dados não informados."
         }), 400
 
 
-    new_date = data.get("date")
+    new_date = data.get(
+        "date"
+    )
 
-    new_time = data.get("time")
+    new_time = data.get(
+        "time"
+    )
+
+
+    connection = get_connection()
+
+
+    appointment = (
+        connection.execute(
+            """
+            SELECT *
+            FROM appointments
+            WHERE id = ?
+            """,
+            (appointment_id,)
+        ).fetchone()
+    )
+
+
+    if appointment is None:
+
+        connection.close()
+
+        return jsonify({
+            "error":
+                "Agendamento não encontrado."
+        }), 404
+
+
+    new_specialty = data.get(
+        "specialty",
+        appointment["specialty"]
+    )
+
+
+    if new_specialty not in SPECIALTIES:
+
+        connection.close()
+
+        return jsonify({
+            "error":
+                "Especialidade inválida."
+        }), 400
 
 
     if not new_date or not new_time:
 
+        connection.close()
+
         return jsonify({
             "error":
-                "Informe a nova data e o novo horário."
+                "Informe a nova data e horário."
         }), 400
 
-
-    # =====================================================
-    # VALIDAR DATA
-    # =====================================================
 
     valid_day, message, status_code = (
         is_valid_business_day(
@@ -838,62 +956,23 @@ def update_appointment(appointment_id):
 
     if not valid_day:
 
+        connection.close()
+
         return jsonify({
-            "error": message
+            "error":
+                message
         }), status_code
 
 
-    # =====================================================
-    # VALIDAR HORÁRIO
-    # =====================================================
-
     if new_time not in ALLOWED_TIMES:
+
+        connection.close()
 
         return jsonify({
             "error":
                 "Horário inválido."
         }), 400
 
-
-    connection = get_connection()
-
-
-    # =====================================================
-    # VERIFICAR SE O AGENDAMENTO EXISTE
-    # =====================================================
-
-    appointment = connection.execute(
-        """
-        SELECT
-            id,
-            patient_name,
-            phone,
-            date,
-            time,
-            created_at
-
-        FROM appointments
-
-        WHERE id = ?
-        """,
-        (appointment_id,)
-    ).fetchone()
-
-
-    if appointment is None:
-
-        connection.close()
-
-
-        return jsonify({
-            "error":
-                "Agendamento não encontrado."
-        }), 404
-
-
-    # =====================================================
-    # VERIFICAR SE NOVO HORÁRIO ESTÁ OCUPADO
-    # =====================================================
 
     occupied = connection.execute(
         """
@@ -903,11 +982,13 @@ def update_appointment(appointment_id):
 
         WHERE date = ?
         AND time = ?
+        AND specialty = ?
         AND id != ?
         """,
         (
             new_date,
             new_time,
+            new_specialty,
             appointment_id
         )
     ).fetchone()
@@ -917,16 +998,11 @@ def update_appointment(appointment_id):
 
         connection.close()
 
-
         return jsonify({
             "error":
-                "Este horário já está ocupado."
+                "Este horário já está ocupado para esta especialidade."
         }), 409
 
-
-    # =====================================================
-    # ALTERAR
-    # =====================================================
 
     try:
 
@@ -935,12 +1011,14 @@ def update_appointment(appointment_id):
             UPDATE appointments
 
             SET
+                specialty = ?,
                 date = ?,
                 time = ?
 
             WHERE id = ?
             """,
             (
+                new_specialty,
                 new_date,
                 new_time,
                 appointment_id
@@ -954,7 +1032,6 @@ def update_appointment(appointment_id):
     except sqlite3.IntegrityError:
 
         connection.close()
-
 
         return jsonify({
             "error":
@@ -976,43 +1053,37 @@ def update_appointment(appointment_id):
                 appointment_id,
 
             "patient_name":
-                appointment["patient_name"],
+                appointment[
+                    "patient_name"
+                ],
 
             "phone":
                 appointment["phone"],
+
+            "specialty":
+                new_specialty,
 
             "date":
                 new_date,
 
             "time":
                 new_time
-
         }
 
     })
 
 
 # =========================================================
-# CANCELAR AGENDAMENTO
-# SOMENTE FUNCIONÁRIOS
+# CANCELAR
 # =========================================================
 
 @app.route(
     "/appointments/<int:appointment_id>",
     methods=["DELETE"]
 )
-def delete_appointment(appointment_id):
-    """
-    Cancela e remove um agendamento.
-
-    Exemplo:
-
-    DELETE /appointments/1
-    """
-
-    # =====================================================
-    # AUTENTICAÇÃO
-    # =====================================================
+def delete_appointment(
+    appointment_id
+):
 
     if not employee_is_authenticated():
 
@@ -1025,31 +1096,21 @@ def delete_appointment(appointment_id):
     connection = get_connection()
 
 
-    # =====================================================
-    # VERIFICAR SE EXISTE
-    # =====================================================
-
-    appointment = connection.execute(
-        """
-        SELECT
-            id,
-            patient_name,
-            phone,
-            date,
-            time
-
-        FROM appointments
-
-        WHERE id = ?
-        """,
-        (appointment_id,)
-    ).fetchone()
+    appointment = (
+        connection.execute(
+            """
+            SELECT *
+            FROM appointments
+            WHERE id = ?
+            """,
+            (appointment_id,)
+        ).fetchone()
+    )
 
 
     if appointment is None:
 
         connection.close()
-
 
         return jsonify({
             "error":
@@ -1057,14 +1118,9 @@ def delete_appointment(appointment_id):
         }), 404
 
 
-    # =====================================================
-    # EXCLUIR
-    # =====================================================
-
     connection.execute(
         """
         DELETE FROM appointments
-
         WHERE id = ?
         """,
         (appointment_id,)
@@ -1079,28 +1135,13 @@ def delete_appointment(appointment_id):
     return jsonify({
 
         "message":
-            "Agendamento cancelado com sucesso.",
-
-        "appointment": {
-
-            "id":
-                appointment_id,
-
-            "patient_name":
-                appointment["patient_name"],
-
-            "date":
-                appointment["date"],
-
-            "time":
-                appointment["time"]
-        }
+            "Agendamento cancelado com sucesso."
 
     })
 
 
 # =========================================================
-# INICIAR SISTEMA
+# INICIAR
 # =========================================================
 
 if __name__ == "__main__":
